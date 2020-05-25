@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<htlm>
+<head>
+<meta charset="UTF-8">
+<titile>位置情報を取得する</titile>
+
+<script>
+window.addEventListener("load", function(){
+
+	var disp = document.getElementById("disp");
+
+	var wpId;
+
+	function getLoc(){
+		wpId = navigator.geolocation.watchPosition(
+			function(position){
+				console.log(position);
+				var lat = position.coords.latitude;
+				var lon = position.coords.longitude;
+				disp.innerHTML = "緯度" + lat + "度/経度：" + lon + "度<br>";
+				disp.innerHTML += "計測誤差:" + position.coords.accuraccy + "m"
+				var ts = position.timestamp;
+				tsx = new Date(ts);
+				console.log(tsx.toLocaleString());
+
+			}
+		);
+	}
+
+	var startBtn = document.getElementById("startBtn");
+	var stopBtn = document.getElementById("stopBtn");
+
+	startBtn.addEventListener("click", function(){
+		getLoc();
+	});
+
+	stopBtn.addEventListener("click", function(){
+		navigator.geolocation.clearWatch(wpId);
+		disp.innerHTML = "位置情報の取得停止中";
+		alert("位置情報の取得を停止しました");
+	});
+});
+</script>
+
+</head>
+<body>
+	<h1>位置情報の取得</h1>
+	<div id="disp">座標取得に成功したらここに情報が出ます</div>
+	<button id="startBtn">取得開始/再開</button>
+	<button id="stopBtn">取得停止</button>
+</body>
+</htlm>
